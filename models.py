@@ -1,0 +1,139 @@
+"""
+models.py — Data models for the Crowdfunding Platform.
+
+Defines the User and Project classes with serialization/deserialization
+methods for JSON persistence.
+"""
+
+
+class User:
+    """
+    Represents a registered user on the crowdfunding platform.
+
+    Attributes:
+        first_name (str): User's first name.
+        last_name (str): User's last name.
+        email (str): User's email address (unique identifier).
+        password (str): User's password (stored as plain text for simplicity).
+        phone (str): User's Egyptian mobile phone number.
+        is_active (bool): Whether the account has been activated.
+        activation_code (str): The code required to activate the account.
+    """
+
+    def __init__(self, first_name: str, last_name: str, email: str,
+                 password: str, phone: str, is_active: bool = False,
+                 activation_code: str = ""):
+        self.first_name = first_name
+        self.last_name = last_name
+        self.email = email
+        self.password = password
+        self.phone = phone
+        self.is_active = is_active
+        self.activation_code = activation_code
+
+    def to_dict(self) -> dict:
+        """Serialize the User instance to a dictionary for JSON storage."""
+        return {
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "email": self.email,
+            "password": self.password,
+            "phone": self.phone,
+            "is_active": self.is_active,
+            "activation_code": self.activation_code,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> "User":
+        """
+        Deserialize a dictionary into a User instance.
+
+        Args:
+            data: Dictionary containing user fields.
+
+        Returns:
+            A new User instance populated from the dictionary.
+        """
+        return cls(
+            first_name=data["first_name"],
+            last_name=data["last_name"],
+            email=data["email"],
+            password=data["password"],
+            phone=data["phone"],
+            is_active=data.get("is_active", False),
+            activation_code=data.get("activation_code", ""),
+        )
+
+    def __str__(self) -> str:
+        status = "Active" if self.is_active else "Inactive"
+        return f"{self.first_name} {self.last_name} ({self.email}) [{status}]"
+
+
+class Project:
+    """
+    Represents a crowdfunding project/campaign.
+
+    Attributes:
+        id (int): Unique project identifier.
+        title (str): Project title.
+        details (str): Project description/details.
+        total_target (float): Fundraising target amount in EGP.
+        start_date (str): Project start date (YYYY-MM-DD).
+        end_date (str): Project end date (YYYY-MM-DD).
+        owner_email (str): Email of the user who created the project.
+    """
+
+    def __init__(self, project_id: int, title: str, details: str,
+                 total_target: float, start_date: str, end_date: str,
+                 owner_email: str):
+        self.id = project_id
+        self.title = title
+        self.details = details
+        self.total_target = total_target
+        self.start_date = start_date
+        self.end_date = end_date
+        self.owner_email = owner_email
+
+    def to_dict(self) -> dict:
+        """Serialize the Project instance to a dictionary for JSON storage."""
+        return {
+            "id": self.id,
+            "title": self.title,
+            "details": self.details,
+            "total_target": self.total_target,
+            "start_date": self.start_date,
+            "end_date": self.end_date,
+            "owner_email": self.owner_email,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> "Project":
+        """
+        Deserialize a dictionary into a Project instance.
+
+        Args:
+            data: Dictionary containing project fields.
+
+        Returns:
+            A new Project instance populated from the dictionary.
+        """
+        return cls(
+            project_id=data["id"],
+            title=data["title"],
+            details=data["details"],
+            total_target=data["total_target"],
+            start_date=data["start_date"],
+            end_date=data["end_date"],
+            owner_email=data["owner_email"],
+        )
+
+    def __str__(self) -> str:
+        return (
+            f"  Project #{self.id}\n"
+            f"  Title       : {self.title}\n"
+            f"  Details     : {self.details}\n"
+            f"  Target      : {self.total_target:,.2f} EGP\n"
+            f"  Start Date  : {self.start_date}\n"
+            f"  End Date    : {self.end_date}\n"
+            f"  Owner       : {self.owner_email}"
+        )
