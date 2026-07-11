@@ -2,8 +2,10 @@
 models.py — Data models for the Crowdfunding Platform.
 
 Defines the User and Project classes with serialization/deserialization
-methods for JSON persistence.
+methods for JSON persistence. User passwords are hashed using werkzeug.
 """
+
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 class User:
@@ -14,22 +16,43 @@ class User:
         first_name (str): User's first name.
         last_name (str): User's last name.
         email (str): User's email address (unique identifier).
-        password (str): User's password (stored as plain text for simplicity).
+        password_hash (str): Hashed password (never stored in plain text).
         phone (str): User's Egyptian mobile phone number.
         is_active (bool): Whether the account has been activated.
         activation_code (str): The code required to activate the account.
     """
 
     def __init__(self, first_name: str, last_name: str, email: str,
-                 password: str, phone: str, is_active: bool = False,
+                 password_hash: str, phone: str, is_active: bool = False,
                  activation_code: str = ""):
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
-        self.password = password
+        self.password_hash = password_hash
         self.phone = phone
         self.is_active = is_active
         self.activation_code = activation_code
+
+    def set_password(self, plain_password: str) -> None:
+        """
+        Hash and store the given plain-text password.
+
+        Args:
+            plain_password: The plain-text password to hash.
+        """
+        self.password_hash = generate_password_hash(plain_password)
+
+    def check_password(self, plain_password: str) -> bool:
+        """
+        Verify a plain-text password against the stored hash.
+
+        Args:
+            plain_password: The plain-text password to verify.
+
+        Returns:
+            True if the password matches the stored hash, False otherwise.
+        """
+        return check_password_hash(self.password_hash, plain_password)
 
     def to_dict(self) -> dict:
         """Serialize the User instance to a dictionary for JSON storage."""
@@ -37,7 +60,7 @@ class User:
             "first_name": self.first_name,
             "last_name": self.last_name,
             "email": self.email,
-            "password": self.password,
+            "password_hash": self.password_hash,
             "phone": self.phone,
             "is_active": self.is_active,
             "activation_code": self.activation_code,
@@ -58,7 +81,7 @@ class User:
             first_name=data["first_name"],
             last_name=data["last_name"],
             email=data["email"],
-            password=data["password"],
+            password_hash=data.get("password_hash", ""),
             phone=data["phone"],
             is_active=data.get("is_active", False),
             activation_code=data.get("activation_code", ""),
