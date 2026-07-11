@@ -3,7 +3,8 @@ auth_manager.py — Authentication manager for the Crowdfunding Platform.
 
 Handles user registration (with activation code generation),
 account activation, and login with full validation.
-Persists user data to a JSON file.
+Persists user data to a JSON file. Refactored for web use —
+all methods accept data and return result dictionaries (no console I/O).
 """
 
 import json
@@ -11,13 +12,7 @@ import os
 import random
 import string
 from models import User
-from validators import (
-    validate_email,
-    validate_egyptian_phone,
-    validate_non_empty,
-    validate_password_match,
-    validate_password_strength,
-)
+from validators import validate_registration_form
 
 
 class AuthManager:
@@ -25,14 +20,15 @@ class AuthManager:
     Manages user authentication: registration, activation, and login.
 
     All user data is persisted to a JSON file so it survives between
-    program runs.
+    program runs. Methods accept data dictionaries and return result
+    dictionaries suitable for use by Flask route handlers.
 
     Attributes:
         file_path (str): Path to the users JSON file.
         users (list[User]): In-memory list of all registered users.
     """
 
-    def __init__(self, file_path: str = "users.json"):
+    def __init__(self, file_path: str = "data/users.json"):
         """
         Initialize the AuthManager and load existing users from disk.
 
@@ -62,6 +58,8 @@ class AuthManager:
 
     def save_users(self) -> None:
         """Write the current in-memory user list to the JSON file."""
+        # Ensure the directory exists
+        os.makedirs(os.path.dirname(self.file_path), exist_ok=True)
         with open(self.file_path, "w", encoding="utf-8") as f:
             json.dump([u.to_dict() for u in self.users], f, indent=2)
 
@@ -69,9 +67,12 @@ class AuthManager:
     #  Helpers
     # ------------------------------------------------------------------ #
 
-    def _find_user_by_email(self, email: str):
+    def find_user_by_email(self, email: str):
         """
         Look up a user by email (case-insensitive).
+
+        Args:
+            email: The email to search for.
 
         Returns:
             The User object if found, or None.
@@ -100,153 +101,142 @@ class AuthManager:
     #  Registration
     # ------------------------------------------------------------------ #
 
-    def register(self) -> bool:
+    def register(self, data: dict) -> dict:
         """
-        Interactive registration flow.
+        Register a new user with validation.
 
-        Collects and validates: first name, last name, email (unique),
-        password + confirmation, and Egyptian phone number.
-        Creates an inactive account and prints the activation code.
+        Args:
+            data: Dictionary with keys: first_name, last_name, email,
+                  password, confirm_password, phone.
 
         Returns:
-            True if registration succeeded, False otherwise.
+            Dictionary with keys:
+                - success (bool): Whether registration succeeded.
+                - errors (dict): Field-level error messages (if any).
+                - activation_code (str): The generated code (on success).
         """
-        print("\n" + "=" * 50)
-        print("         USER REGISTRATION")
-        print("=" * 50)
+        # Run field-level validation
+        errors = validate_registration_form(data)
 
-        # --- First name ---
-        first_name = input("  First name : ").strip()
-        valid, msg = validate_non_empty(first_name, "First name")
-        if not valid:
-            print(f"  ✗ {msg}")
-            return False
+        # Check for duplicate email (only if email format is valid)
+        email = data.get("email", "").strip().lower()
+        if "email" not in errors and self.find_user_by_email(email):
+            errors["email"] = "This email is already registered."
 
-        # --- Last name ---
-        last_name = input("  Last name  : ").strip()
-        valid, msg = validate_non_empty(last_name, "Last name")
-        if not valid:
-            print(f"  ✗ {msg}")
-            return False
+        if errors:
+            return {"success": False, "errors": errors, "activation_code": ""}
 
-        # --- Email ---
-        email = input("  Email      : ").strip()
-        if not validate_email(email):
-            print("  ✗ Invalid email format.")
-            return False
-        if self._find_user_by_email(email):
-            print("  ✗ This email is already registered.")
-            return False
-
-        # --- Password ---
-        password = input("  Password   : ").strip()
-        if not validate_password_strength(password):
-            print("  ✗ Password must be at least 6 characters long.")
-            return False
-
-        confirm = input("  Confirm PW : ").strip()
-        if not validate_password_match(password, confirm):
-            print("  ✗ Passwords do not match.")
-            return False
-
-        # --- Phone ---
-        phone = input("  Phone      : ").strip()
-        if not validate_egyptian_phone(phone):
-            print("  ✗ Invalid Egyptian phone number.")
-            print("    Must start with 010, 011, 012, or 015 and be 11 digits.")
-            return False
-
-        # --- Create the user ---
+        # Create the user with a hashed password
         code = self._generate_activation_code()
         user = User(
-            first_name=first_name,
-            last_name=last_name,
-            email=email.lower(),
-            password=password,
-            phone=phone,
+            first_name=data["first_name"].strip(),
+            last_name=data["last_name"].strip(),
+            email=email,
+            password_hash="",  # Will be set by set_password()
+            phone=data["phone"].strip(),
             is_active=False,
             activation_code=code,
         )
+        user.set_password(data["password"])
+
         self.users.append(user)
         self.save_users()
 
-        print("\n  ✓ Registration successful!")
-        print(f"  ✉ Your activation code is: {code}")
-        print("    (Use 'Activate Account' from the main menu.)\n")
-        return True
+        return {
+            "success": True,
+            "errors": {},
+            "activation_code": code,
+        }
 
     # ------------------------------------------------------------------ #
     #  Account Activation
     # ------------------------------------------------------------------ #
 
-    def activate_account(self) -> bool:
+    def activate(self, email: str, code: str) -> dict:
         """
-        Interactive account activation flow.
+        Activate a user account with the given activation code.
 
-        Asks for the user's email and the activation code that was
-        displayed at registration time.
+        Args:
+            email: The user's email address.
+            code: The activation code to verify.
 
         Returns:
-            True if activation succeeded, False otherwise.
+            Dictionary with keys:
+                - success (bool): Whether activation succeeded.
+                - message (str): A user-facing message.
         """
-        print("\n" + "=" * 50)
-        print("       ACCOUNT ACTIVATION")
-        print("=" * 50)
+        if not email or not email.strip():
+            return {"success": False, "message": "Email is required."}
 
-        email = input("  Email           : ").strip()
-        user = self._find_user_by_email(email)
+        if not code or not code.strip():
+            return {"success": False, "message": "Activation code is required."}
+
+        user = self.find_user_by_email(email.strip())
         if not user:
-            print("  ✗ No account found with that email.")
-            return False
+            return {"success": False, "message": "No account found with that email."}
 
         if user.is_active:
-            print("  ✗ This account is already active.")
-            return False
+            return {"success": False, "message": "This account is already active."}
 
-        code = input("  Activation code : ").strip()
-        if code != user.activation_code:
-            print("  ✗ Invalid activation code.")
-            return False
+        if code.strip() != user.activation_code:
+            return {"success": False, "message": "Invalid activation code."}
 
         user.is_active = True
         user.activation_code = ""  # Clear the code after use
         self.save_users()
 
-        print("  ✓ Account activated successfully! You can now log in.\n")
-        return True
+        return {"success": True, "message": "Account activated successfully! You can now log in."}
 
     # ------------------------------------------------------------------ #
     #  Login
     # ------------------------------------------------------------------ #
 
-    def login(self):
+    def login(self, email: str, password: str) -> dict:
         """
-        Interactive login flow.
+        Authenticate a user with email and password.
 
-        Validates email existence, password match, and active status.
+        Args:
+            email: The user's email address.
+            password: The plain-text password to verify.
 
         Returns:
-            The User object on successful login, or None on failure.
+            Dictionary with keys:
+                - success (bool): Whether login succeeded.
+                - user (User | None): The User object on success, None on failure.
+                - message (str): A user-facing message.
         """
-        print("\n" + "=" * 50)
-        print("            USER LOGIN")
-        print("=" * 50)
+        if not email or not email.strip():
+            return {"success": False, "user": None, "message": "Email is required."}
 
-        email = input("  Email    : ").strip()
-        user = self._find_user_by_email(email)
+        if not password:
+            return {"success": False, "user": None, "message": "Password is required."}
+
+        user = self.find_user_by_email(email.strip())
+
+        # Intentionally vague for security, but clear enough for dev/testing
         if not user:
-            print("  ✗ No account found with that email.")
-            return None
+            return {
+                "success": False,
+                "user": None,
+                "message": "Invalid email or password.",
+            }
 
-        password = input("  Password : ").strip()
-        if password != user.password:
-            print("  ✗ Incorrect password.")
-            return None
+        if not user.check_password(password):
+            return {
+                "success": False,
+                "user": None,
+                "message": "Invalid email or password.",
+            }
 
         if not user.is_active:
-            print("  ✗ Your account is not activated yet.")
-            print("    Please activate your account first.")
-            return None
+            return {
+                "success": False,
+                "user": None,
+                "message": "Your account is not activated yet. Please activate your account first.",
+            }
 
-        print(f"\n  ✓ Welcome back, {user.first_name}!\n")
-        return user
+        return {
+            "success": True,
+            "user": user,
+            "message": f"Welcome back, {user.first_name}!",
+        }
