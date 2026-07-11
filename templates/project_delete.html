@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Delete Project — CrowdFund{% endblock %}
+
+{% block content %}
+<div class="form-page">
+    <div class="form-card confirm-card" id="delete-project-card">
+        <div class="form-card-header">
+            <span class="confirm-icon">⚠️</span>
+            <h1>Delete Project</h1>
+            <p>Are you sure you want to delete this project?</p>
+        </div>
+
+        <div class="confirm-details">
+            <div class="confirm-project-info">
+                <h2>{{ project.title }}</h2>
+                <p>{{ project.details }}</p>
+                <div class="project-meta">
+                    <div class="meta-item">
+                        <span class="meta-label">Target</span>
+                        <span class="meta-value">{{ project.total_target | int }} EGP</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Start</span>
+                        <span class="meta-value">{{ project.start_date }}</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">End</span>
+                        <span class="meta-value">{{ project.end_date }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="confirm-warning">
+                <p>⚠️ This action <strong>cannot be undone</strong>. The project and all its data will be permanently removed.</p>
+            </div>
+        </div>
+
+        <div class="confirm-actions">
+            <form method="POST" action="{{ url_for('project_delete', project_id=project.id) }}" style="display: inline;">
+                <button type="submit" class="btn btn-danger" id="confirm-delete-btn">
+                    🗑️ Yes, Delete This Project
+                </button>
+            </form>
+            <a href="{{ url_for('projects_list') }}" class="btn btn-ghost" id="cancel-delete-btn">
+                Cancel
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

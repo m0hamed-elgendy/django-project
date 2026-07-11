@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Login — CrowdFund{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="auth-card" id="login-card">
+        <div class="auth-header">
+            <span class="auth-icon">🔐</span>
+            <h1>Welcome Back</h1>
+            <p class="auth-subtitle">Log in to manage your campaigns.</p>
+        </div>
+
+        <form method="POST" action="{{ url_for('login') }}" class="auth-form" id="login-form" novalidate>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email"
+                       value="{{ email }}"
+                       placeholder="you@example.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password"
+                       placeholder="Enter your password" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block" id="login-btn">
+                Log In
+            </button>
+        </form>
+
+        <div class="auth-footer">
+            <p>Don't have an account? <a href="{{ url_for('register') }}">Register</a></p>
+            <p>Need to activate? <a href="{{ url_for('activate') }}">Activate account</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

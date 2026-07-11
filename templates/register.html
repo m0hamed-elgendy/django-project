@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}Register — CrowdFund{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="auth-card" id="register-card">
+        <div class="auth-header">
+            <span class="auth-icon">🚀</span>
+            <h1>Create Account</h1>
+            <p class="auth-subtitle">Join the community. Start funding dreams today.</p>
+        </div>
+
+        <form method="POST" action="{{ url_for('register') }}" class="auth-form" id="register-form" novalidate>
+            <div class="form-row">
+                <div class="form-group {% if errors.get('first_name') %}has-error{% endif %}">
+                    <label for="first_name">First Name</label>
+                    <input type="text" id="first_name" name="first_name"
+                           value="{{ data.get('first_name', '') }}"
+                           placeholder="Enter your first name" required>
+                    {% if errors.get('first_name') %}
+                        <span class="field-error">{{ errors.first_name }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="form-group {% if errors.get('last_name') %}has-error{% endif %}">
+                    <label for="last_name">Last Name</label>
+                    <input type="text" id="last_name" name="last_name"
+                           value="{{ data.get('last_name', '') }}"
+                           placeholder="Enter your last name" required>
+                    {% if errors.get('last_name') %}
+                        <span class="field-error">{{ errors.last_name }}</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="form-group {% if errors.get('email') %}has-error{% endif %}">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email"
+                       value="{{ data.get('email', '') }}"
+                       placeholder="you@example.com" required>
+                {% if errors.get('email') %}
+                    <span class="field-error">{{ errors.email }}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-row">
+                <div class="form-group {% if errors.get('password') %}has-error{% endif %}">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password"
+                           placeholder="At least 6 characters" required minlength="6">
+                    {% if errors.get('password') %}
+                        <span class="field-error">{{ errors.password }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="form-group {% if errors.get('confirm_password') %}has-error{% endif %}">
+                    <label for="confirm_password">Confirm Password</label>
+                    <input type="password" id="confirm_password" name="confirm_password"
+                           placeholder="Re-enter password" required>
+                    {% if errors.get('confirm_password') %}
+                        <span class="field-error">{{ errors.confirm_password }}</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="form-group {% if errors.get('phone') %}has-error{% endif %}">
+                <label for="phone">Mobile Phone (Egyptian)</label>
+                <input type="tel" id="phone" name="phone"
+                       value="{{ data.get('phone', '') }}"
+                       placeholder="01XXXXXXXXX" required
+                       pattern="^01[0125]\d{8}$" maxlength="11">
+                {% if errors.get('phone') %}
+                    <span class="field-error">{{ errors.phone }}</span>
+                {% endif %}
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block" id="register-btn">
+                Create Account
+            </button>
+        </form>
+
+        <div class="auth-footer">
+            <p>Already have an account? <a href="{{ url_for('login') }}">Log in</a></p>
+            <p>Need to activate? <a href="{{ url_for('activate') }}">Activate account</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

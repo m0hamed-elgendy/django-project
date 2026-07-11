@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}All Projects — CrowdFund{% endblock %}
+
+{% block content %}
+<div class="projects-page">
+    <div class="page-header">
+        <h1>All Projects</h1>
+        <p class="page-subtitle">Browse all campaigns from the community</p>
+        <a href="{{ url_for('project_create') }}" class="btn btn-primary" id="create-project-btn">
+            + New Project
+        </a>
+    </div>
+
+    {% if projects %}
+        <div class="projects-grid">
+            {% for item in projects %}
+                <div class="project-card" id="project-{{ item.project.id }}">
+                    <div class="project-card-header">
+                        <h2 class="project-title">{{ item.project.title }}</h2>
+                        <span class="project-badge">
+                            {{ item.project.total_target | int | string }}
+                            <small>EGP</small>
+                        </span>
+                    </div>
+
+                    <p class="project-details">{{ item.project.details }}</p>
+
+                    <div class="project-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Start</span>
+                            <span class="meta-value">{{ item.project.start_date }}</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">End</span>
+                            <span class="meta-value">{{ item.project.end_date }}</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">By</span>
+                            <span class="meta-value">{{ item.owner_name }}</span>
+                        </div>
+                    </div>
+
+                    {% if item.project.owner_email == current_user_email %}
+                        <div class="project-actions">
+                            <a href="{{ url_for('project_edit', project_id=item.project.id) }}"
+                               class="btn btn-sm btn-secondary" id="edit-{{ item.project.id }}">
+                                ✏️ Edit
+                            </a>
+                            <a href="{{ url_for('project_delete', project_id=item.project.id) }}"
+                               class="btn btn-sm btn-danger" id="delete-{{ item.project.id }}">
+                                🗑️ Delete
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">📭</div>
+            <h2>No Projects Yet</h2>
+            <p>Be the first to create a campaign!</p>
+            <a href="{{ url_for('project_create') }}" class="btn btn-primary">Create Your First Project</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — CrowdFund{% endblock %}
+
+{% block content %}
+<div class="dashboard-page">
+    <div class="dashboard-hero">
+        <h1>Welcome, <span class="highlight">{{ first_name }}</span>! 👋</h1>
+        <p class="dashboard-subtitle">Ready to fund dreams or create your own campaign?</p>
+    </div>
+
+    <div class="dashboard-grid">
+        <a href="{{ url_for('project_create') }}" class="dashboard-card" id="card-create">
+            <div class="card-icon">🎯</div>
+            <h2>Create Project</h2>
+            <p>Launch a new fundraising campaign and share your vision with the world.</p>
+        </a>
+
+        <a href="{{ url_for('projects_list') }}" class="dashboard-card" id="card-view">
+            <div class="card-icon">📋</div>
+            <h2>View All Projects</h2>
+            <p>Browse all active campaigns from the community.</p>
+        </a>
+
+        <a href="{{ url_for('project_search') }}" class="dashboard-card" id="card-search">
+            <div class="card-icon">🔍</div>
+            <h2>Search by Date</h2>
+            <p>Find projects by specific dates or date ranges.</p>
+        </a>
+
+        <a href="{{ url_for('logout') }}" class="dashboard-card card-logout" id="card-logout">
+            <div class="card-icon">🚪</div>
+            <h2>Logout</h2>
+            <p>Sign out of your account safely.</p>
+        </a>
+    </div>
+</div>
+{% endblock %}

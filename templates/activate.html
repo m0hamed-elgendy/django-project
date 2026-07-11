@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Activate Account — CrowdFund{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="auth-card" id="activate-card">
+        <div class="auth-header">
+            <span class="auth-icon">✉️</span>
+            <h1>Activate Account</h1>
+            <p class="auth-subtitle">Enter the activation code from your registration.</p>
+        </div>
+
+        <form method="POST" action="{{ url_for('activate') }}" class="auth-form" id="activate-form" novalidate>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email"
+                       value="{{ email }}"
+                       placeholder="you@example.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="activation_code">Activation Code</label>
+                <input type="text" id="activation_code" name="activation_code"
+                       placeholder="Enter your 6-character code" required
+                       maxlength="6" style="text-transform: uppercase; letter-spacing: 0.3em; text-align: center; font-size: 1.25rem; font-weight: 600;">
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block" id="activate-btn">
+                Activate Account
+            </button>
+        </form>
+
+        <div class="auth-footer">
+            <p>Don't have an account? <a href="{{ url_for('register') }}">Register</a></p>
+            <p>Already activated? <a href="{{ url_for('login') }}">Log in</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}
