@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "first_name": "Mohamed",
+    "last_name": "Elgendy",
+    "email": "ahmed@test.com",
+    "password_hash": "scrypt:32768:8:1$rGwpRNrUlA8OoUzg$7c8bb9d474fe309aa741290bb50148b7e21e924c58cfeb01daecf47cf0e97d4427ac6c16a1ee63ba9ae8f446a4529fd60f78b6d81bab394c64f59434315c0655",
+    "phone": "01064536311",
+    "is_active": false,
+    "activation_code": "FABK8W"
+  },
+  {
+    "first_name": "Amir",
+    "last_name": "Nader",
+    "email": "amir@zine.com",
+    "password_hash": "scrypt:32768:8:1$jYNlbEjDBt9odOgA$a83628d3cca8d8c87b26b751ff2083d2290e24bb46da08fd73951527b688ca1e331d756dc52132ba03913ad05276a54c29ddc50416f68ab33cd59289adcd3040",
+    "phone": "01012345678",
+    "is_active": true,
+    "activation_code": ""
+  },
+  {
+    "first_name": "Mohamed",
+    "last_name": "Elgendy",
+    "email": "moelgendy56789@gmail.com",
+    "password_hash": "scrypt:32768:8:1$kWxt6ZNYYfgBXEmf$c6233b19a0e69ab8ee0401541034187663bb53a6b9d461f76afd57631e5d11913ed89b64ce3b45c02cab85f93cca1782a94bc20d39f12ae2b91017682e18e266",
+    "phone": "01064536311",
+    "is_active": false,
+    "activation_code": "9KGC1L"
+  },
+  {
+    "first_name": "Mohamed",
+    "last_name": "Elgendy",
+    "email": "moelgendy5679@gmail.com",
+    "password_hash": "scrypt:32768:8:1$Lg3sDx0s0059qFJU$a689f152be68705bcc959251f403cff1419d98f79eae8b567a6a5f37008d184a16e1ccd7444296aec6f35a994443debbe94f7d3305a83d870e9ad7a010e931c2",
+    "phone": "01064536311",
+    "is_active": false,
+    "activation_code": "Y7FJVK"
+  },
+  {
+    "first_name": "Mohamed",
+    "last_name": "Elgendy",
+    "email": "moelgendy579@gmail.com",
+    "password_hash": "scrypt:32768:8:1$nOvzkSdKvWU1NbQR$0731e626e9c60f32c552ac94f12f0640eda2b138ae75dd435e2f945fa27de8a8c46a86ac1dc1a5e5120a60fc8ea93a351d23fbd82e22010beece5b3252f9df00",
+    "phone": "01064536311",
+    "is_active": true,
+    "activation_code": ""
+  },
+  {
+    "first_name": "ahmed",
+    "last_name": "mohamed",
+    "email": "ahmed1@test.com",
+    "password_hash": "scrypt:32768:8:1$GFUbFcN6nY8M7UKT$9c03ad40ab78bfce72be012ca060743fadc2b1422089d5fe44cca9430f14c701b7e01113c077f65d5cd40128cff7c14f33ede950ea30ff22428322f51bcee628",
+    "phone": "01064536311",
+    "is_active": false,
+    "activation_code": "HX5B2W"
+  },
+  {
+    "first_name": "ahmed",
+    "last_name": "mohamed",
+    "email": "ahmed31@test.com",
+    "password_hash": "scrypt:32768:8:1$IniaoNyRdOGwlLET$ca1e99797d5fc0f46d032290acf331a3fe1469e1a05bf003bc9d90faddf8448f198a21e4765509e7b6c41de2ee88b8a256f707bb00b873d3931960200a0d82c7",
+    "phone": "01064536311",
+    "is_active": true,
+    "activation_code": ""
+  },
+  {
+    "first_name": "test",
+    "last_name": "user",
+    "email": "test@gmail.com",
+    "password_hash": "scrypt:32768:8:1$Aa8IpI6BsJdNL6Lk$1ee1e82fc69d249fd4f59fa11a1cc1d12074e6a5a4e97966d2340292b6a4d292df1bcc4533ac86e57cac6c75bf5a7fa611282d57e06177db6ddc13aad4c7247f",
+    "phone": "01064536311",
+    "is_active": true,
+    "activation_code": ""
+  }
+]

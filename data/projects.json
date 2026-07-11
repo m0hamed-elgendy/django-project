@@ -1,1 +1,32 @@
-[]
+[
+  {
+    "id": 1,
+    "title": "Alexandria Clean Oceans Initiative",
+    "details": "A community project aiming to remove marine waste from the coast of Alexandria.",
+    "total_target": 45000.0,
+    "current_funding": 0.0,
+    "start_date": "2026-07-12",
+    "end_date": "2026-08-12",
+    "owner_email": "amir@zine.com"
+  },
+  {
+    "id": 2,
+    "title": "test campain 325",
+    "details": "ertre ertewrt wefwef vsmkvsl skkld;kg",
+    "total_target": 40000.0,
+    "current_funding": 0.0,
+    "start_date": "2026-02-23",
+    "end_date": "2026-06-13",
+    "owner_email": "moelgendy579@gmail.com"
+  },
+  {
+    "id": 3,
+    "title": "ahmed campains",
+    "details": "sjdkgljgsa lksjfdljdsj;lkklds ;skjsdjkljkgkjsdkj laskkdjvkj vslkdvj",
+    "total_target": 98532.0,
+    "current_funding": 0.0,
+    "start_date": "2026-07-11",
+    "end_date": "2026-08-01",
+    "owner_email": "ahmed31@test.com"
+  }
+]
