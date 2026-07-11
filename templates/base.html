@@ -3,39 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Crowdfunding Platform — Fund your dreams. Support great ideas.">
-    <title>{% block title %}Crowdfunding Platform{% endblock %}</title>
+    <meta name="description" content="CrowdFund Platform — Frosted Glassmorphism Crowdfunding Web Application.">
+    <title>{% block title %}CrowdFund{% endblock %}</title>
+    <!-- Google Fonts: Outfit (headings/UI) & Inter (body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    {% if session.get('user_email') %}
-    <nav class="navbar" id="main-navbar">
-        <div class="nav-container">
-            <a href="{{ url_for('dashboard') }}" class="nav-brand">
-                <span class="brand-icon">🚀</span>
-                <span class="brand-text">CrowdFund</span>
-            </a>
-            <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            <ul class="nav-links" id="nav-links">
-                <li><a href="{{ url_for('dashboard') }}" class="nav-link">Dashboard</a></li>
-                <li><a href="{{ url_for('projects_list') }}" class="nav-link">Projects</a></li>
-                <li><a href="{{ url_for('project_create') }}" class="nav-link">Create</a></li>
-                <li><a href="{{ url_for('project_search') }}" class="nav-link">Search</a></li>
-                <li class="nav-user">
-                    <span class="nav-user-name">{{ session.get('user_first_name', 'User') }}</span>
-                    <a href="{{ url_for('logout') }}" class="nav-link nav-logout" id="logout-btn">Logout</a>
-                </li>
-            </ul>
+    
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-glass">
+                <a href="{{ url_for('index') }}" class="nav-brand">
+                    <div class="brand-icon-wrapper">
+                        <i data-lucide="rocket"></i>
+                    </div>
+                    <span>CrowdFund</span>
+                </a>
+                
+                {% if session.get('user_email') %}
+                <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                
+                <ul class="nav-links" id="nav-links">
+                    <li>
+                        <a href="{{ url_for('dashboard') }}" class="nav-link {% if request.path == url_for('dashboard') %}active{% endif %}">
+                            <i data-lucide="layout-dashboard" size="18"></i> Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('projects_list') }}" class="nav-link {% if request.path == url_for('projects_list') %}active{% endif %}">
+                            <i data-lucide="folder-git-2" size="18"></i> Campaigns
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('project_create') }}" class="nav-link {% if request.path == url_for('project_create') %}active{% endif %}">
+                            <i data-lucide="plus-circle" size="18"></i> Create
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('project_search') }}" class="nav-link {% if request.path == url_for('project_search') %}active{% endif %}">
+                            <i data-lucide="search" size="18"></i> Search
+                        </a>
+                    </li>
+                    <li class="nav-user">
+                        <span class="nav-user-name">{{ session.get('user_first_name', 'User') }}</span>
+                        <a href="{{ url_for('logout') }}" class="nav-link nav-logout-btn" id="logout-btn">
+                            <i data-lucide="log-out" size="16"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+                {% endif %}
+            </div>
         </div>
     </nav>
-    {% endif %}
 
     <main class="main-content">
         <div class="container">
@@ -43,7 +69,18 @@
                 {% if messages %}
                     {% for category, message in messages %}
                         <div class="flash-message flash-{{ category }}" role="alert">
-                            <span class="flash-text">{{ message }}</span>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                {% if category == 'success' %}
+                                    <i data-lucide="check-circle" size="20"></i>
+                                {% elif category == 'error' %}
+                                    <i data-lucide="alert-circle" size="20"></i>
+                                {% elif category == 'warning' %}
+                                    <i data-lucide="alert-triangle" size="20"></i>
+                                {% else %}
+                                    <i data-lucide="info" size="20"></i>
+                                {% endif %}
+                                <span class="flash-text">{{ message }}</span>
+                            </div>
                             <button class="flash-close" aria-label="Close">&times;</button>
                         </div>
                     {% endfor %}
@@ -56,10 +93,12 @@
 
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2026 CrowdFund Platform. Built with Flask &amp; ❤️</p>
+            <p>&copy; 2026 CrowdFund Platform. Engineered with Flask &amp; Lucide Icons.</p>
         </div>
     </footer>
 
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>

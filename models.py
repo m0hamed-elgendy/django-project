@@ -101,6 +101,7 @@ class Project:
         title (str): Project title.
         details (str): Project description/details.
         total_target (float): Fundraising target amount in EGP.
+        current_funding (float): Total funds raised so far.
         start_date (str): Project start date (YYYY-MM-DD).
         end_date (str): Project end date (YYYY-MM-DD).
         owner_email (str): Email of the user who created the project.
@@ -108,14 +109,22 @@ class Project:
 
     def __init__(self, project_id: int, title: str, details: str,
                  total_target: float, start_date: str, end_date: str,
-                 owner_email: str):
+                 owner_email: str, current_funding: float = 0.0):
         self.id = project_id
         self.title = title
         self.details = details
         self.total_target = total_target
+        self.current_funding = current_funding
         self.start_date = start_date
         self.end_date = end_date
         self.owner_email = owner_email
+
+    @property
+    def percent_funded(self) -> int:
+        """Calculate the percentage of the target goal funded so far."""
+        if self.total_target <= 0:
+            return 0
+        return min(int((self.current_funding / self.total_target) * 100), 100)
 
     def to_dict(self) -> dict:
         """Serialize the Project instance to a dictionary for JSON storage."""
@@ -124,6 +133,7 @@ class Project:
             "title": self.title,
             "details": self.details,
             "total_target": self.total_target,
+            "current_funding": self.current_funding,
             "start_date": self.start_date,
             "end_date": self.end_date,
             "owner_email": self.owner_email,
@@ -148,6 +158,7 @@ class Project:
             start_date=data["start_date"],
             end_date=data["end_date"],
             owner_email=data["owner_email"],
+            current_funding=data.get("current_funding", 0.0),
         )
 
     def __str__(self) -> str:
@@ -156,6 +167,7 @@ class Project:
             f"  Title       : {self.title}\n"
             f"  Details     : {self.details}\n"
             f"  Target      : {self.total_target:,.2f} EGP\n"
+            f"  Raised      : {self.current_funding:,.2f} EGP ({self.percent_funded}%)\n"
             f"  Start Date  : {self.start_date}\n"
             f"  End Date    : {self.end_date}\n"
             f"  Owner       : {self.owner_email}"

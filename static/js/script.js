@@ -2,12 +2,20 @@
  * script.js — Client-side JavaScript for the Crowdfunding Platform.
  *
  * Handles:
+ * - Lucide icons initialization
  * - Flash message auto-dismiss and close buttons
  * - Mobile navbar toggle
  * - Client-side form validation (email, phone, password match, etc.)
  */
 
 document.addEventListener('DOMContentLoaded', function () {
+
+    // ----------------------------------------------------------------
+    //  Initialize Lucide Icons
+    // ----------------------------------------------------------------
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
 
     // ----------------------------------------------------------------
     //  Flash message close buttons & auto-dismiss
@@ -33,10 +41,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 6000);
     });
 
-    // Add slideUp animation
-    const style = document.createElement('style');
-    style.textContent = '@keyframes slideUp { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-10px); } }';
-    document.head.appendChild(style);
+    // Add slideUp animation if not already defined
+    if (!document.getElementById('slideup-styles')) {
+        const style = document.createElement('style');
+        style.id = 'slideup-styles';
+        style.textContent = '@keyframes slideUp { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-10px); } }';
+        document.head.appendChild(style);
+    }
 
 
     // ----------------------------------------------------------------
@@ -67,8 +78,16 @@ document.addEventListener('DOMContentLoaded', function () {
         field.parentElement.classList.add('has-error');
         var errorSpan = document.createElement('span');
         errorSpan.className = 'field-error';
-        errorSpan.textContent = message;
+        errorSpan.innerHTML = '<i data-lucide="alert-circle" size="14"></i> ' + message;
         field.parentElement.appendChild(errorSpan);
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons({
+                attrs: {
+                    class: ['lucide']
+                },
+                nameAttr: 'data-lucide'
+            });
+        }
     }
 
     function clearFieldError(field) {
@@ -149,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 showFieldError(phone, 'Phone number cannot be empty.');
                 valid = false;
             } else if (!phoneRegex.test(phone.value.trim())) {
-                showFieldError(phone, 'Invalid Egyptian phone number (010/011/012/015, 11 digits).');
+                showFieldError(phone, 'Invalid Egyptian phone number (starts with 010, 011, 012, or 015 and be 11 digits).');
                 valid = false;
             }
 

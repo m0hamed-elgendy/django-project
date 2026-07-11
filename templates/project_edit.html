@@ -1,28 +1,29 @@
 {% extends "base.html" %}
-{% block title %}Edit Project — CrowdFund{% endblock %}
+{% block title %}Edit Campaign — CrowdFund{% endblock %}
 
 {% block content %}
-<div class="form-page">
-    <div class="form-card" id="edit-project-card">
-        <div class="form-card-header">
-            <h1>✏️ Edit Project</h1>
-            <p>Update your campaign details</p>
-        </div>
+<div class="form-page-layout">
+    <div class="form-page-header">
+        <h1>Edit Campaign</h1>
+        <p>Update goals, dates, or details for your project</p>
+    </div>
 
+    <div class="form-card" id="edit-project-card">
         <form method="POST" action="{{ url_for('project_edit', project_id=project.id) }}" class="project-form" id="project-edit-form" novalidate>
+            
             <div class="form-group {% if errors.get('title') %}has-error{% endif %}">
-                <label for="title">Project Title</label>
+                <label for="title">Campaign Title</label>
                 <input type="text" id="title" name="title"
                        value="{{ data.get('title', '') }}"
-                       placeholder="Give your project a catchy title" required>
+                       placeholder="Give your campaign a memorable name" required>
                 {% if errors.get('title') %}
                     <span class="field-error">{{ errors.title }}</span>
                 {% endif %}
             </div>
 
             <div class="form-group {% if errors.get('details') %}has-error{% endif %}">
-                <label for="details">Description</label>
-                <textarea id="details" name="details" rows="4"
+                <label for="details">Campaign Details</label>
+                <textarea id="details" name="details" rows="5"
                           placeholder="Describe your project"
                           required>{{ data.get('details', '') }}</textarea>
                 {% if errors.get('details') %}
@@ -31,10 +32,10 @@
             </div>
 
             <div class="form-group {% if errors.get('total_target') %}has-error{% endif %}">
-                <label for="total_target">Target Amount (EGP)</label>
+                <label for="total_target">Target Goal Amount (EGP)</label>
                 <input type="number" id="total_target" name="total_target"
                        value="{{ data.get('total_target', '') }}"
-                       placeholder="e.g. 50000" required min="1" step="any">
+                       placeholder="e.g., 25000" required min="1" step="any">
                 {% if errors.get('total_target') %}
                     <span class="field-error">{{ errors.total_target }}</span>
                 {% endif %}
@@ -60,11 +61,11 @@
                 </div>
             </div>
 
-            <div class="form-actions">
-                <button type="submit" class="btn btn-primary" id="update-btn">
-                    💾 Save Changes
+            <div class="form-actions-bar">
+                <button type="submit" class="btn btn-primary" id="update-btn" style="flex: 1;">
+                    <i data-lucide="save" size="18"></i> Save Changes
                 </button>
-                <a href="{{ url_for('projects_list') }}" class="btn btn-ghost">Cancel</a>
+                <a href="{{ url_for('projects_list') }}" class="btn btn-secondary">Cancel</a>
             </div>
         </form>
     </div>

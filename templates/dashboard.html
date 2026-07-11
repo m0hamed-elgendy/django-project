@@ -3,34 +3,77 @@
 
 {% block content %}
 <div class="dashboard-page">
-    <div class="dashboard-hero">
-        <h1>Welcome, <span class="highlight">{{ first_name }}</span>! 👋</h1>
-        <p class="dashboard-subtitle">Ready to fund dreams or create your own campaign?</p>
+    
+    <!-- Hero / Header Section -->
+    <div class="hero-card">
+        <div class="hero-content">
+            <h1 class="hero-title">Welcome back, <span class="highlight">{{ first_name }}</span>!</h1>
+            <p class="hero-subtitle">What will you fund or launch today? Connect with visionaries and support breakthrough ideas around the globe.</p>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                <a href="{{ url_for('project_create') }}" class="btn btn-primary">
+                    <i data-lucide="plus-circle" size="18"></i> Launch Campaign
+                </a>
+                <a href="{{ url_for('projects_list') }}" class="btn btn-secondary">
+                    <i data-lucide="compass" size="18"></i> Explore Projects
+                </a>
+            </div>
+        </div>
+        
+        <!-- Floating Illustration badging -->
+        <div class="hero-illustration">
+            <div class="hero-badge-float">
+                <div style="background: rgba(79,70,229,0.1); padding: 8px; border-radius: 50%; color: var(--color-primary);">
+                    <i data-lucide="trending-up"></i>
+                </div>
+                <div>
+                    <h4 style="font-size: 1rem; font-weight: 800;">4.8M EGP</h4>
+                    <p style="font-size: 0.75rem; color: var(--color-text-muted);">Total Raised</p>
+                </div>
+            </div>
+            <div class="hero-badge-float alt">
+                <div style="background: rgba(16,185,129,0.1); padding: 8px; border-radius: 50%; color: var(--color-success);">
+                    <i data-lucide="users"></i>
+                </div>
+                <div>
+                    <h4 style="font-size: 1rem; font-weight: 800;">12,450</h4>
+                    <p style="font-size: 0.75rem; color: var(--color-text-muted);">Backers Active</p>
+                </div>
+            </div>
+        </div>
     </div>
 
+    <!-- Quick Navigation Dashboard Cards -->
     <div class="dashboard-grid">
         <a href="{{ url_for('project_create') }}" class="dashboard-card" id="card-create">
-            <div class="card-icon">🎯</div>
-            <h2>Create Project</h2>
-            <p>Launch a new fundraising campaign and share your vision with the world.</p>
+            <div class="dashboard-card-icon">
+                <i data-lucide="rocket" size="24"></i>
+            </div>
+            <h3>Create Campaign</h3>
+            <p>Design and submit a new fundraising campaign. Set targets, choose custom dates, and attract backers.</p>
         </a>
 
         <a href="{{ url_for('projects_list') }}" class="dashboard-card" id="card-view">
-            <div class="card-icon">📋</div>
-            <h2>View All Projects</h2>
-            <p>Browse all active campaigns from the community.</p>
+            <div class="dashboard-card-icon">
+                <i data-lucide="grid" size="24"></i>
+            </div>
+            <h3>Explore Campaigns</h3>
+            <p>Browse crowdfunding projects from the community. View detailed stats, track milestones, and edit your campaigns.</p>
         </a>
 
         <a href="{{ url_for('project_search') }}" class="dashboard-card" id="card-search">
-            <div class="card-icon">🔍</div>
-            <h2>Search by Date</h2>
-            <p>Find projects by specific dates or date ranges.</p>
+            <div class="dashboard-card-icon">
+                <i data-lucide="search" size="24"></i>
+            </div>
+            <h3>Search campaigns</h3>
+            <p>Filter active campaigns using custom date ranges to locate specific projects launching soon.</p>
         </a>
 
         <a href="{{ url_for('logout') }}" class="dashboard-card card-logout" id="card-logout">
-            <div class="card-icon">🚪</div>
-            <h2>Logout</h2>
-            <p>Sign out of your account safely.</p>
+            <div class="dashboard-card-icon" style="background: rgba(244,63,94,0.1); color: var(--color-accent);">
+                <i data-lucide="log-out" size="24"></i>
+            </div>
+            <h3>Log Out</h3>
+            <p>Safely log out of your crowdfunding account. Save your work and end your active server session.</p>
         </a>
     </div>
 </div>

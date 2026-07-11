@@ -5,9 +5,11 @@
 <div class="auth-page">
     <div class="auth-card" id="activate-card">
         <div class="auth-header">
-            <span class="auth-icon">✉️</span>
-            <h1>Activate Account</h1>
-            <p class="auth-subtitle">Enter the activation code from your registration.</p>
+            <div class="auth-logo" style="background: var(--gradient-accent); box-shadow: 0 8px 20px rgba(244, 63, 94, 0.25);">
+                <i data-lucide="mail-open"></i>
+            </div>
+            <h2>Activate Account</h2>
+            <p>Verify your email using your activation code</p>
         </div>
 
         <form method="POST" action="{{ url_for('activate') }}" class="auth-form" id="activate-form" novalidate>
@@ -15,24 +17,24 @@
                 <label for="email">Email Address</label>
                 <input type="email" id="email" name="email"
                        value="{{ email }}"
-                       placeholder="you@example.com" required>
+                       placeholder="name@domain.com" required>
             </div>
 
             <div class="form-group">
                 <label for="activation_code">Activation Code</label>
                 <input type="text" id="activation_code" name="activation_code"
-                       placeholder="Enter your 6-character code" required
-                       maxlength="6" style="text-transform: uppercase; letter-spacing: 0.3em; text-align: center; font-size: 1.25rem; font-weight: 600;">
+                       placeholder="6-Digit Code" required
+                       maxlength="6" style="text-transform: uppercase; letter-spacing: 0.3em; text-align: center; font-size: 1.3rem; font-weight: 800;">
             </div>
 
-            <button type="submit" class="btn btn-primary btn-block" id="activate-btn">
-                Activate Account
+            <button type="submit" class="btn btn-primary btn-block" id="activate-btn" style="margin-top: var(--space-xs);">
+                Activate Account <i data-lucide="shield-check" size="18"></i>
             </button>
         </form>
 
-        <div class="auth-footer">
-            <p>Don't have an account? <a href="{{ url_for('register') }}">Register</a></p>
-            <p>Already activated? <a href="{{ url_for('login') }}">Log in</a></p>
+        <div class="auth-footer-links">
+            <p>Don't have an account? <a href="{{ url_for('register') }}">Register here</a></p>
+            <p>Already active? <a href="{{ url_for('login') }}">Log in here</a></p>
         </div>
     </div>
 </div>

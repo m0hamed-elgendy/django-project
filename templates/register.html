@@ -5,9 +5,11 @@
 <div class="auth-page">
     <div class="auth-card" id="register-card">
         <div class="auth-header">
-            <span class="auth-icon">🚀</span>
-            <h1>Create Account</h1>
-            <p class="auth-subtitle">Join the community. Start funding dreams today.</p>
+            <div class="auth-logo">
+                <i data-lucide="user-plus"></i>
+            </div>
+            <h2>Create Account</h2>
+            <p>Join our global community of creators and backers</p>
         </div>
 
         <form method="POST" action="{{ url_for('register') }}" class="auth-form" id="register-form" novalidate>
@@ -16,7 +18,7 @@
                     <label for="first_name">First Name</label>
                     <input type="text" id="first_name" name="first_name"
                            value="{{ data.get('first_name', '') }}"
-                           placeholder="Enter your first name" required>
+                           placeholder="First name" required>
                     {% if errors.get('first_name') %}
                         <span class="field-error">{{ errors.first_name }}</span>
                     {% endif %}
@@ -26,7 +28,7 @@
                     <label for="last_name">Last Name</label>
                     <input type="text" id="last_name" name="last_name"
                            value="{{ data.get('last_name', '') }}"
-                           placeholder="Enter your last name" required>
+                           placeholder="Last name" required>
                     {% if errors.get('last_name') %}
                         <span class="field-error">{{ errors.last_name }}</span>
                     {% endif %}
@@ -37,7 +39,7 @@
                 <label for="email">Email Address</label>
                 <input type="email" id="email" name="email"
                        value="{{ data.get('email', '') }}"
-                       placeholder="you@example.com" required>
+                       placeholder="you@domain.com" required>
                 {% if errors.get('email') %}
                     <span class="field-error">{{ errors.email }}</span>
                 {% endif %}
@@ -47,7 +49,7 @@
                 <div class="form-group {% if errors.get('password') %}has-error{% endif %}">
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password"
-                           placeholder="At least 6 characters" required minlength="6">
+                           placeholder="At least 6 chars" required minlength="6">
                     {% if errors.get('password') %}
                         <span class="field-error">{{ errors.password }}</span>
                     {% endif %}
@@ -56,7 +58,7 @@
                 <div class="form-group {% if errors.get('confirm_password') %}has-error{% endif %}">
                     <label for="confirm_password">Confirm Password</label>
                     <input type="password" id="confirm_password" name="confirm_password"
-                           placeholder="Re-enter password" required>
+                           placeholder="Confirm password" required>
                     {% if errors.get('confirm_password') %}
                         <span class="field-error">{{ errors.confirm_password }}</span>
                     {% endif %}
@@ -64,7 +66,7 @@
             </div>
 
             <div class="form-group {% if errors.get('phone') %}has-error{% endif %}">
-                <label for="phone">Mobile Phone (Egyptian)</label>
+                <label for="phone">Egyptian Mobile Number</label>
                 <input type="tel" id="phone" name="phone"
                        value="{{ data.get('phone', '') }}"
                        placeholder="01XXXXXXXXX" required
@@ -74,13 +76,13 @@
                 {% endif %}
             </div>
 
-            <button type="submit" class="btn btn-primary btn-block" id="register-btn">
-                Create Account
+            <button type="submit" class="btn btn-primary btn-block" id="register-btn" style="margin-top: var(--space-xs);">
+                Create Account <i data-lucide="check" size="18"></i>
             </button>
         </form>
 
-        <div class="auth-footer">
-            <p>Already have an account? <a href="{{ url_for('login') }}">Log in</a></p>
+        <div class="auth-footer-links">
+            <p>Already have an account? <a href="{{ url_for('login') }}">Log in here</a></p>
             <p>Need to activate? <a href="{{ url_for('activate') }}">Activate account</a></p>
         </div>
     </div>
