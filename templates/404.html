@@ -2,22 +2,19 @@
 {% block title %}Page Not Found — CrowdFund{% endblock %}
 
 {% block content %}
-<div class="error-page-layout">
-    <div class="error-glass-card">
-        <div class="error-icon">
-            <i data-lucide="compass" size="64"></i>
-        </div>
-        <div class="error-title">404</div>
-        <h2 style="font-family: var(--font-heading); font-weight: 800; font-size: 1.75rem; margin-bottom: var(--space-sm);">Page Not Found</h2>
-        <p class="error-message">The page you're searching for does not exist or has been relocated to another galaxy.</p>
-        <div class="error-actions">
+<div class="error-layout">
+    <div class="error-card">
+        <div class="error-code">404</div>
+        <h2 style="font-family: var(--font-heading); font-weight: 700; margin-bottom: var(--space-xs);">Page Not Found</h2>
+        <p class="error-msg">The URL route requested is not registered on this server board.</p>
+        <div style="display: flex; gap: var(--space-md); justify-content: center;">
             {% if session.get('user_email') %}
                 <a href="{{ url_for('dashboard') }}" class="btn btn-primary">
-                    <i data-lucide="home" size="18"></i> Dashboard
+                    Dashboard
                 </a>
             {% else %}
                 <a href="{{ url_for('login') }}" class="btn btn-primary">
-                    <i data-lucide="log-in" size="18"></i> Go to Login
+                    Go to Login
                 </a>
             {% endif %}
         </div>

@@ -2,20 +2,17 @@
 {% block title %}Access Denied — CrowdFund{% endblock %}
 
 {% block content %}
-<div class="error-page-layout">
-    <div class="error-glass-card">
-        <div class="error-icon" style="color: var(--color-accent);">
-            <i data-lucide="shield-alert" size="64"></i>
-        </div>
-        <div class="error-title">403</div>
-        <h2 style="font-family: var(--font-heading); font-weight: 800; font-size: 1.75rem; margin-bottom: var(--space-sm);">Access Denied</h2>
-        <p class="error-message">You do not have access rights to edit or delete someone else's campaign. Only the campaign owner may perform this action.</p>
-        <div class="error-actions" style="display: flex; gap: var(--space-md); justify-content: center;">
+<div class="error-layout">
+    <div class="error-card">
+        <div class="error-code" style="text-decoration-color: var(--stamp-red);">403</div>
+        <h2 style="font-family: var(--font-heading); font-weight: 700; margin-bottom: var(--space-xs);">Access Denied</h2>
+        <p class="error-msg">Permission denied. You can only modify or delete campaigns that are linked to your owner account record.</p>
+        <div style="display: flex; gap: var(--space-md); justify-content: center;">
             <a href="{{ url_for('projects_list') }}" class="btn btn-primary">
-                <i data-lucide="compass" size="18"></i> View Campaigns
+                View Campaigns
             </a>
-            <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">
-                <i data-lucide="layout-dashboard" size="18"></i> Dashboard
+            <a href="{{ url_for('dashboard') }}" class="btn">
+                Dashboard
             </a>
         </div>
     </div>

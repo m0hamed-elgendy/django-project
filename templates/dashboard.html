@@ -4,40 +4,39 @@
 {% block content %}
 <div class="dashboard-page">
     
-    <!-- Hero / Header Section -->
-    <div class="hero-card">
-        <div class="hero-content">
-            <h1 class="hero-title">Welcome back, <span class="highlight">{{ first_name }}</span>!</h1>
-            <p class="hero-subtitle">What will you fund or launch today? Connect with visionaries and support breakthrough ideas around the globe.</p>
-            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+    <!-- Zine Billboard Hero Section -->
+    <div class="hero-poster">
+        <div class="hero-text">
+            <h1>Campaign <span class="highlight">Bulletin</span></h1>
+            <p class="hero-desc">Connecting builders, creators, and community backers under a transparent funding ledger. Launch a campaign or check current board listings.</p>
+            <div class="hero-actions">
                 <a href="{{ url_for('project_create') }}" class="btn btn-primary">
-                    <i data-lucide="plus-circle" size="18"></i> Launch Campaign
+                    Launch Campaign
                 </a>
-                <a href="{{ url_for('projects_list') }}" class="btn btn-secondary">
-                    <i data-lucide="compass" size="18"></i> Explore Projects
+                <a href="{{ url_for('projects_list') }}" class="btn">
+                    Explore Board
                 </a>
             </div>
         </div>
         
-        <!-- Floating Illustration badging -->
-        <div class="hero-illustration">
-            <div class="hero-badge-float">
-                <div style="background: rgba(79,70,229,0.1); padding: 8px; border-radius: 50%; color: var(--color-primary);">
-                    <i data-lucide="trending-up"></i>
-                </div>
-                <div>
-                    <h4 style="font-size: 1rem; font-weight: 800;">4.8M EGP</h4>
-                    <p style="font-size: 0.75rem; color: var(--color-text-muted);">Total Raised</p>
-                </div>
+        <!-- Physical layout info panel -->
+        <div class="hero-infobox">
+            <div class="infobox-title">Board Overview</div>
+            <div class="infobox-row">
+                <span>Location:</span>
+                <strong>Egypt / Global</strong>
             </div>
-            <div class="hero-badge-float alt">
-                <div style="background: rgba(16,185,129,0.1); padding: 8px; border-radius: 50%; color: var(--color-success);">
-                    <i data-lucide="users"></i>
-                </div>
-                <div>
-                    <h4 style="font-size: 1rem; font-weight: 800;">12,450</h4>
-                    <p style="font-size: 0.75rem; color: var(--color-text-muted);">Backers Active</p>
-                </div>
+            <div class="infobox-row">
+                <span>Ledger Currency:</span>
+                <strong>EGP</strong>
+            </div>
+            <div class="infobox-row">
+                <span>System Backers:</span>
+                <strong>12,450</strong>
+            </div>
+            <div class="infobox-row">
+                <span>Verification:</span>
+                <strong>Active</strong>
             </div>
         </div>
     </div>
@@ -45,35 +44,31 @@
     <!-- Quick Navigation Dashboard Cards -->
     <div class="dashboard-grid">
         <a href="{{ url_for('project_create') }}" class="dashboard-card" id="card-create">
-            <div class="dashboard-card-icon">
-                <i data-lucide="rocket" size="24"></i>
+            <div class="dashboard-card-header">
+                <span>01 //</span> Launch Campaign
             </div>
-            <h3>Create Campaign</h3>
-            <p>Design and submit a new fundraising campaign. Set targets, choose custom dates, and attract backers.</p>
+            <p>Publish a new campaign to the community board. Fill out target metrics and timelines to start raising support.</p>
         </a>
 
         <a href="{{ url_for('projects_list') }}" class="dashboard-card" id="card-view">
-            <div class="dashboard-card-icon">
-                <i data-lucide="grid" size="24"></i>
+            <div class="dashboard-card-header">
+                <span>02 //</span> Explore Campaigns
             </div>
-            <h3>Explore Campaigns</h3>
-            <p>Browse crowdfunding projects from the community. View detailed stats, track milestones, and edit your campaigns.</p>
+            <p>Browse all active funding campaigns submitted to the public bulletin board. Track targets and timelines.</p>
         </a>
 
         <a href="{{ url_for('project_search') }}" class="dashboard-card" id="card-search">
-            <div class="dashboard-card-icon">
-                <i data-lucide="search" size="24"></i>
+            <div class="dashboard-card-header">
+                <span>03 //</span> Filter Dates
             </div>
-            <h3>Search campaigns</h3>
-            <p>Filter active campaigns using custom date ranges to locate specific projects launching soon.</p>
+            <p>Locate specific projects by applying calendar-range filters to trace scheduled project launches.</p>
         </a>
 
         <a href="{{ url_for('logout') }}" class="dashboard-card card-logout" id="card-logout">
-            <div class="dashboard-card-icon" style="background: rgba(244,63,94,0.1); color: var(--color-accent);">
-                <i data-lucide="log-out" size="24"></i>
+            <div class="dashboard-card-header" style="color: var(--stamp-red);">
+                <span>04 //</span> Close Session
             </div>
-            <h3>Log Out</h3>
-            <p>Safely log out of your crowdfunding account. Save your work and end your active server session.</p>
+            <p>Terminate your active dashboard authentication session and safely clear server cookie states.</p>
         </a>
     </div>
 </div>

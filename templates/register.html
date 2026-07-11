@@ -4,12 +4,9 @@
 {% block content %}
 <div class="auth-page">
     <div class="auth-card" id="register-card">
-        <div class="auth-header">
-            <div class="auth-logo">
-                <i data-lucide="user-plus"></i>
-            </div>
+        <div class="form-header">
             <h2>Create Account</h2>
-            <p>Join our global community of creators and backers</p>
+            <p>REGISTER A NEW MEMBERSHIP RECORD IN THE SYSTEM</p>
         </div>
 
         <form method="POST" action="{{ url_for('register') }}" class="auth-form" id="register-form" novalidate>
@@ -49,16 +46,16 @@
                 <div class="form-group {% if errors.get('password') %}has-error{% endif %}">
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password"
-                           placeholder="At least 6 chars" required minlength="6">
+                           placeholder="Min 6 characters" required minlength="6">
                     {% if errors.get('password') %}
                         <span class="field-error">{{ errors.password }}</span>
                     {% endif %}
                 </div>
 
                 <div class="form-group {% if errors.get('confirm_password') %}has-error{% endif %}">
-                    <label for="confirm_password">Confirm Password</label>
+                    <label for="confirm_password">Confirm</label>
                     <input type="password" id="confirm_password" name="confirm_password"
-                           placeholder="Confirm password" required>
+                           placeholder="Re-enter password" required>
                     {% if errors.get('confirm_password') %}
                         <span class="field-error">{{ errors.confirm_password }}</span>
                     {% endif %}
@@ -66,7 +63,7 @@
             </div>
 
             <div class="form-group {% if errors.get('phone') %}has-error{% endif %}">
-                <label for="phone">Egyptian Mobile Number</label>
+                <label for="phone">Egyptian Mobile</label>
                 <input type="tel" id="phone" name="phone"
                        value="{{ data.get('phone', '') }}"
                        placeholder="01XXXXXXXXX" required
@@ -77,11 +74,11 @@
             </div>
 
             <button type="submit" class="btn btn-primary btn-block" id="register-btn" style="margin-top: var(--space-xs);">
-                Create Account <i data-lucide="check" size="18"></i>
+                Create Account
             </button>
         </form>
 
-        <div class="auth-footer-links">
+        <div class="auth-footer">
             <p>Already have an account? <a href="{{ url_for('login') }}">Log in here</a></p>
             <p>Need to activate? <a href="{{ url_for('activate') }}">Activate account</a></p>
         </div>

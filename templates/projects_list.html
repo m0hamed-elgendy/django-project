@@ -1,16 +1,18 @@
 {% extends "base.html" %}
-{% block title %}Explore Campaigns — CrowdFund{% endblock %}
+{% block title %}Campaign Board — CrowdFund{% endblock %}
 
 {% block content %}
 <div class="projects-page">
     
-    <div class="projects-page-header">
+    <div class="projects-header">
         <div>
-            <h1>Explore Campaigns</h1>
-            <p style="color: var(--color-text-muted);">Explore live campaigns from creators around the world</p>
+            <h1>Campaign Board</h1>
+            <p style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--ink-charcoal); margin-top: 4px;">
+                SHOWING ALL PUBLIC FUNDING CAMPAIGNS REGISTERED IN THE GENERAL LEDGER
+            </p>
         </div>
         <a href="{{ url_for('project_create') }}" class="btn btn-primary" id="create-project-btn">
-            <i data-lucide="plus-circle" size="18"></i> Launch Campaign
+            New Campaign
         </a>
     </div>
 
@@ -18,84 +20,77 @@
         <div class="projects-grid">
             {% for item in projects %}
                 <div class="project-card" id="project-{{ item.project.id }}">
-                    <!-- Colored banner header -->
-                    <div class="project-card-banner"></div>
                     
-                    <div class="project-card-content">
-                        <div class="project-card-header">
-                            <h2 class="project-card-title">{{ item.project.title }}</h2>
+                    <h2 class="project-card-title">{{ item.project.title }}</h2>
+                    <p class="project-card-desc">{{ item.project.details }}</p>
+
+                    <!-- Stenciled Progress Block -->
+                    <div class="project-progress-block">
+                        <!-- 10 Segmented Meter -->
+                        <div class="segmented-meter">
+                            {% for i in range(10) %}
+                                {% if item.project.percent_funded >= (i * 10) + 5 %}
+                                    <div class="meter-segment filled"></div>
+                                {% else %}
+                                    <div class="meter-segment empty"></div>
+                                {% endif %}
+                            {% endfor %}
                         </div>
-
-                        <p class="project-card-desc">{{ item.project.details }}</p>
-
-                        <!-- Kickstarter/GoFundMe Style progress blocks -->
-                        <div class="project-funding-block">
-                            <div class="progress-bar-container">
-                                <div class="progress-bar-fill" style="width: {{ item.project.percent_funded }}%;"></div>
+                        
+                        <!-- Monospace Stats Table -->
+                        <div class="stats-table">
+                            <div class="stats-cell">
+                                <span class="stats-val">{{ item.project.percent_funded }}%</span>
+                                <span class="stats-lbl">Funded</span>
                             </div>
-                            
-                            <div class="funding-stats">
-                                <div class="stat-group">
-                                    <span class="stat-val">{{ item.project.percent_funded }}%</span>
-                                    <span class="stat-lbl">Funded</span>
-                                </div>
-                                <div class="stat-group">
-                                    <span class="stat-val">{{ item.project.current_funding | int }} <small>EGP</small></span>
-                                    <span class="stat-lbl">Raised</span>
-                                </div>
-                                <div class="stat-group">
-                                    <span class="stat-val">{{ item.project.total_target | int }} <small>EGP</small></span>
-                                    <span class="stat-lbl">Goal</span>
-                                </div>
+                            <div class="stats-cell">
+                                <span class="stats-val">{{ item.project.current_funding | int }}</span>
+                                <span class="stats-lbl">Raised EGP</span>
                             </div>
-                        </div>
-
-                        <!-- Owner indicator badge -->
-                        <div class="project-owner-info">
-                            <div class="owner-avatar">
-                                {{ item.owner_name[0] | upper }}
-                            </div>
-                            <span class="owner-name">by {{ item.owner_name }}</span>
-                        </div>
-
-                        <div style="display: flex; gap: var(--space-xs); font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: var(--space-md);">
-                            <div style="display: flex; align-items: center; gap: 4px;">
-                                <i data-lucide="calendar-days" size="14"></i>
-                                <span>{{ item.project.start_date }}</span>
-                            </div>
-                            <span>&bull;</span>
-                            <div style="display: flex; align-items: center; gap: 4px;">
-                                <i data-lucide="hourglass" size="14"></i>
-                                <span>Ends {{ item.project.end_date }}</span>
+                            <div class="stats-cell">
+                                <span class="stats-val">{{ item.project.total_target | int }}</span>
+                                <span class="stats-lbl">Goal EGP</span>
                             </div>
                         </div>
-
-                        <!-- Owner specific action buttons -->
-                        {% if item.project.owner_email == current_user_email %}
-                            <div class="project-actions">
-                                <a href="{{ url_for('project_edit', project_id=item.project.id) }}"
-                                   class="btn btn-sm btn-secondary" id="edit-{{ item.project.id }}" style="flex: 1;">
-                                    <i data-lucide="pencil" size="14"></i> Edit
-                                </a>
-                                <a href="{{ url_for('project_delete', project_id=item.project.id) }}"
-                                   class="btn btn-sm btn-danger" id="delete-{{ item.project.id }}">
-                                    <i data-lucide="trash-2" size="14"></i>
-                                </a>
-                            </div>
-                        {% endif %}
                     </div>
+
+                    <!-- Monospace metadata block -->
+                    <div class="project-meta-row">
+                        <div class="meta-field">
+                            <span class="owner-label">CREATOR</span>
+                            <span>{{ item.owner_name | upper }}</span>
+                        </div>
+                        <div class="meta-field" style="margin-top: 6px;">
+                            <span>START:</span>
+                            <strong>{{ item.project.start_date }}</strong>
+                        </div>
+                        <div class="meta-field">
+                            <span>LIMIT:</span>
+                            <strong>{{ item.project.end_date }}</strong>
+                        </div>
+                    </div>
+
+                    {% if item.project.owner_email == current_user_email %}
+                        <div class="project-actions">
+                            <a href="{{ url_for('project_edit', project_id=item.project.id) }}"
+                               class="btn btn-sm btn-block" id="edit-{{ item.project.id }}">
+                                Edit Campaign
+                            </a>
+                            <a href="{{ url_for('project_delete', project_id=item.project.id) }}"
+                               class="btn btn-sm btn-danger" id="delete-{{ item.project.id }}">
+                                Delete
+                            </a>
+                        </div>
+                    {% endif %}
                 </div>
             {% endfor %}
         </div>
     {% else %}
         <div class="empty-state">
-            <div class="empty-icon">
-                <i data-lucide="folder-open"></i>
-            </div>
-            <h3>No Campaigns Active</h3>
-            <p>Be the pioneer! Launch your campaign today and start gathering support.</p>
+            <h3 style="font-family: var(--font-heading); font-weight: 700;">Ledger is Empty</h3>
+            <p>No campaigns have been posted to this board yet.</p>
             <a href="{{ url_for('project_create') }}" class="btn btn-primary">
-                <i data-lucide="plus-circle" size="18"></i> Create Campaign
+                Launch First Campaign
             </a>
         </div>
     {% endif %}

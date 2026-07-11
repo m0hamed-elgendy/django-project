@@ -3,12 +3,12 @@
 
 {% block content %}
 <div class="form-page-layout">
-    <div class="form-page-header">
-        <h1>Search Campaigns</h1>
-        <p>Locate campaigns by start/end date ranges</p>
-    </div>
+    <div class="zine-card" id="search-project-card">
+        <div class="form-header">
+            <h2>Search Campaigns</h2>
+            <p>FILTER ACTIVE CAMPAIGNS ON THE BULLETIN BOARD BY DATE RANGE</p>
+        </div>
 
-    <div class="form-card" id="search-project-card">
         <form method="POST" action="{{ url_for('project_search') }}" class="project-form" id="project-search-form" novalidate>
             <div class="form-row">
                 <div class="form-group">
@@ -23,90 +23,84 @@
             </div>
 
             <button type="submit" class="btn btn-primary btn-block" id="search-btn">
-                <i data-lucide="search" size="18"></i> Search
+                Search Board
             </button>
         </form>
     </div>
 
     {% if results is not none %}
-        <div class="search-results" id="search-results">
+        <div style="margin-top: var(--space-2xl);">
             {% if results %}
-                <h2 class="results-title" style="margin-bottom: var(--space-lg); font-size: 1.5rem;">
+                <h2 style="font-size: 1.5rem; margin-bottom: var(--space-lg); letter-spacing: -0.5px;">
                     Found {{ results | length }} matching campaign(s)
                 </h2>
                 <div class="projects-grid">
                     {% for item in results %}
                         <div class="project-card" id="result-{{ item.project.id }}">
-                            <div class="project-card-banner"></div>
-                            <div class="project-card-content">
-                                <div class="project-card-header">
-                                    <h2 class="project-card-title">{{ item.project.title }}</h2>
+                            <h2 class="project-card-title">{{ item.project.title }}</h2>
+                            <p class="project-card-desc">{{ item.project.details }}</p>
+
+                            <!-- Stenciled Progress Block -->
+                            <div class="project-progress-block">
+                                <div class="segmented-meter">
+                                    {% for i in range(10) %}
+                                        {% if item.project.percent_funded >= (i * 10) + 5 %}
+                                            <div class="meter-segment filled"></div>
+                                        {% else %}
+                                            <div class="meter-segment empty"></div>
+                                        {% endif %}
+                                    {% endfor %}
                                 </div>
-
-                                <p class="project-card-desc">{{ item.project.details }}</p>
-
-                                <div class="project-funding-block">
-                                    <div class="progress-bar-container">
-                                        <div class="progress-bar-fill" style="width: {{ item.project.percent_funded }}%;"></div>
+                                <div class="stats-table">
+                                    <div class="stats-cell">
+                                        <span class="stats-val">{{ item.project.percent_funded }}%</span>
+                                        <span class="stats-lbl">Funded</span>
                                     </div>
-                                    <div class="funding-stats">
-                                        <div class="stat-group">
-                                            <span class="stat-val">{{ item.project.percent_funded }}%</span>
-                                            <span class="stat-lbl">Funded</span>
-                                        </div>
-                                        <div class="stat-group">
-                                            <span class="stat-val">{{ item.project.current_funding | int }} <small>EGP</small></span>
-                                            <span class="stat-lbl">Raised</span>
-                                        </div>
-                                        <div class="stat-group">
-                                            <span class="stat-val">{{ item.project.total_target | int }} <small>EGP</small></span>
-                                            <span class="stat-lbl">Goal</span>
-                                        </div>
+                                    <div class="stats-cell">
+                                        <span class="stats-val">{{ item.project.current_funding | int }}</span>
+                                        <span class="stats-lbl">Raised EGP</span>
                                     </div>
-                                </div>
-
-                                <div class="project-owner-info">
-                                    <div class="owner-avatar">
-                                        {{ item.owner_name[0] | upper }}
-                                    </div>
-                                    <span class="owner-name">by {{ item.owner_name }}</span>
-                                </div>
-
-                                <div style="display: flex; gap: var(--space-xs); font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: var(--space-md);">
-                                    <div style="display: flex; align-items: center; gap: 4px;">
-                                        <i data-lucide="calendar-days" size="14"></i>
-                                        <span>{{ item.project.start_date }}</span>
-                                    </div>
-                                    <span>&bull;</span>
-                                    <div style="display: flex; align-items: center; gap: 4px;">
-                                        <i data-lucide="hourglass" size="14"></i>
-                                        <span>Ends {{ item.project.end_date }}</span>
+                                    <div class="stats-cell">
+                                        <span class="stats-val">{{ item.project.total_target | int }}</span>
+                                        <span class="stats-lbl">Goal EGP</span>
                                     </div>
                                 </div>
-
-                                {% if item.project.owner_email == current_user_email %}
-                                    <div class="project-actions">
-                                        <a href="{{ url_for('project_edit', project_id=item.project.id) }}"
-                                           class="btn btn-sm btn-secondary" style="flex: 1;">
-                                            <i data-lucide="pencil" size="14"></i> Edit
-                                        </a>
-                                        <a href="{{ url_for('project_delete', project_id=item.project.id) }}"
-                                           class="btn btn-sm btn-danger">
-                                            <i data-lucide="trash-2" size="14"></i>
-                                        </a>
-                                    </div>
-                                {% endif %}
                             </div>
+
+                            <div class="project-meta-row">
+                                <div class="meta-field">
+                                    <span class="owner-label">CREATOR</span>
+                                    <span>{{ item.owner_name | upper }}</span>
+                                </div>
+                                <div class="meta-field" style="margin-top: 6px;">
+                                    <span>START:</span>
+                                    <strong>{{ item.project.start_date }}</strong>
+                                </div>
+                                <div class="meta-field">
+                                    <span>LIMIT:</span>
+                                    <strong>{{ item.project.end_date }}</strong>
+                                </div>
+                            </div>
+
+                            {% if item.project.owner_email == current_user_email %}
+                                <div class="project-actions">
+                                    <a href="{{ url_for('project_edit', project_id=item.project.id) }}"
+                                       class="btn btn-sm btn-block">
+                                        Edit Campaign
+                                    </a>
+                                    <a href="{{ url_for('project_delete', project_id=item.project.id) }}"
+                                       class="btn btn-sm btn-danger">
+                                        Delete
+                                    </a>
+                                </div>
+                            {% endif %}
                         </div>
                     {% endfor %}
                 </div>
             {% else %}
                 <div class="empty-state" style="margin-top: var(--space-xl);">
-                    <div class="empty-icon">
-                        <i data-lucide="search-code"></i>
-                    </div>
                     <h3>No Matching Campaigns</h3>
-                    <p>We couldn't find any campaign active during the specified dates. Try another search range.</p>
+                    <p>No listings match your search criteria. Try a different range.</p>
                 </div>
             {% endif %}
         </div>

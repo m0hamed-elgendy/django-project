@@ -4,12 +4,9 @@
 {% block content %}
 <div class="auth-page">
     <div class="auth-card" id="login-card">
-        <div class="auth-header">
-            <div class="auth-logo">
-                <i data-lucide="lock"></i>
-            </div>
+        <div class="form-header">
             <h2>Welcome Back</h2>
-            <p>Log in to manage your active campaigns</p>
+            <p>ENTER USER CREDENTIALS FOR DASHBOARD ACCESS</p>
         </div>
 
         <form method="POST" action="{{ url_for('login') }}" class="auth-form" id="login-form" novalidate>
@@ -17,23 +14,23 @@
                 <label for="email">Email Address</label>
                 <input type="email" id="email" name="email"
                        value="{{ email }}"
-                       placeholder="name@domain.com" required>
+                       placeholder="you@domain.com" required>
             </div>
 
             <div class="form-group">
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password"
-                       placeholder="Enter your account password" required>
+                       placeholder="Password" required>
             </div>
 
             <button type="submit" class="btn btn-primary btn-block" id="login-btn" style="margin-top: var(--space-xs);">
-                Log In <i data-lucide="arrow-right" size="18"></i>
+                Log In
             </button>
         </form>
 
-        <div class="auth-footer-links">
-            <p>Don't have an account? <a href="{{ url_for('register') }}">Register now</a></p>
-            <p>Need validation? <a href="{{ url_for('activate') }}">Activate account</a></p>
+        <div class="auth-footer">
+            <p>Need to register? <a href="{{ url_for('register') }}">Create account</a></p>
+            <p>Need to activate? <a href="{{ url_for('activate') }}">Activate account</a></p>
         </div>
     </div>
 </div>
